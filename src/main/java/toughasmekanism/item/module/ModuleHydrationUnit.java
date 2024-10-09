@@ -1,18 +1,17 @@
 package toughasmekanism.item.module;
 
 
-import java.util.function.Consumer;
 import mekanism.api.energy.IEnergyContainer;
 import mekanism.api.gear.ICustomModule;
-import mekanism.api.gear.IHUDElement;
+
 import mekanism.api.gear.IModule;
-import mekanism.api.gear.IModuleHelper;
+
 import mekanism.api.math.FloatingLong;
-import mekanism.api.MekanismAPI;
-import net.minecraft.resources.ResourceLocation;
+
 import net.minecraft.world.entity.player.Player;
 import toughasnails.api.thirst.IThirst;
 import toughasnails.api.thirst.ThirstHelper;
+
 
 public class ModuleHydrationUnit implements ICustomModule<ModuleHydrationUnit> {
     public ModuleHydrationUnit() {
@@ -26,11 +25,5 @@ public class ModuleHydrationUnit implements ICustomModule<ModuleHydrationUnit> {
             module.useEnergy(player, FloatingLong.create(100L));
         }
 
-    }
-
-    public void addHUDElements(IModule<ModuleHydrationUnit> module, Player player, Consumer<IHUDElement> hudElementAdder) {
-        if (module.isEnabled()) {
-            hudElementAdder.accept(IModuleHelper.INSTANCE.IHUDElement(new ResourceLocation("toughasmekanism:textures/gui/hud/hydration_unit"), 1.0));
-        }
     }
 }

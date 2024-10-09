@@ -1,67 +1,57 @@
 package toughasmekanism;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.core.io.WritingMode;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
+@Mod.EventBusSubscriber(modid = ToughAsMekanism.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class config {
-    @EventBusSubscriber(
-            modid = "toughasmekanism",
-            bus = Bus.MOD
-    )
-    public class Config {
-        private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-        private static final ForgeConfigSpec.LongValue MODULE_THERMOREGULATOR_UNIT_USAGE;
-        private static final ForgeConfigSpec.IntValue MAGIC_NUMBER;
-        public static final ForgeConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION;
-        private static final ForgeConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS;
-        static final ForgeConfigSpec SPEC;
-        public static Long moduleThermoregulatorUnitUsage;
-        public static int magicNumber;
-        public static String magicNumberIntroduction;
-        public static Set<Item> items;
+    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-        public Config() {
-        }
+    public static final ForgeConfigSpec.LongValue MODULE_THERMOREGULATOR_UNIT_USAGE;
+    public static final ForgeConfigSpec.LongValue MODULE_HYDRATION_UNIT_USAGE;
+    public static final ForgeConfigSpec.IntValue MODULE_HYDRATION_UNIT_GIVES_THIRST;
 
-        private static boolean validateItemName(Object obj) {
-            boolean var10000;
-            if (obj instanceof String itemName) {
-                if (ForgeRegistries.ITEMS.containsKey(new ResourceLocation(itemName))) {
-                    var10000 = true;
-                    return var10000;
-                }
-            }
+    static {
+        MODULE_THERMOREGULATOR_UNIT_USAGE = BUILDER
+                .comment("How much energy the Thermoregulator unit uses per tick")
+                .defineInRange("moduleThermoregulatorUnitUsage", 100L, 0L, 1000L);
 
-            var10000 = false;
-            return var10000;
-        }
+        MODULE_HYDRATION_UNIT_USAGE = BUILDER
+                .comment("How much energy the Hydration unit uses per tick")
+                .defineInRange("moduleHydrationUnitUsage", 50L, 0L, 1000L);
 
-        @SubscribeEvent
-        static void onLoad(ModConfigEvent event) {
-            moduleThermoregulatorUnitUsage = (Long)MODULE_THERMOREGULATOR_UNIT_USAGE.get();
-            magicNumber = (Integer)MAGIC_NUMBER.get();
-            magicNumberIntroduction = (String)MAGIC_NUMBER_INTRODUCTION.get();
-            items = (Set)((List)ITEM_STRINGS.get()).stream().map((itemName) -> {
-                return (Item)ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName));
-            }).collect(Collectors.toSet());
-        }
-
-        static {
-            MODULE_THERMOREGULATOR_UNIT_USAGE = BUILDER.comment("How much energy the Thermoregulator unit uses per tick").defineInRange("moduleThermoregulatorUnitUsage", 100L, 0L, 1000L);
-            MAGIC_NUMBER = BUILDER.comment("A magic number").defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
-            MAGIC_NUMBER_INTRODUCTION = BUILDER.comment("What you want the introduction message to be for the magic number").define("magicNumberIntroduction", "The magic number is... ");
-            ITEM_STRINGS = BUILDER.comment("A list of items to log on common setup.").defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), Config::validateItemName);
-            SPEC = BUILDER.build();
-        }
+        MODULE_HYDRATION_UNIT_GIVES_THIRST = BUILDER
+                .comment("How much thirst the Hydration unit gives per tick")
+                .defineInRange("moduleHydrationUnitGivesThirst", 1, 0, 20);
     }
 
+    public static final ForgeConfigSpec SPEC = BUILDER.build();
+
+    public static Long moduleThermoregulatorUnitUsage;
+    public static Long moduleHydrationUnitUsage;
+    public static Integer moduleHydrationUnitGivesThirst;
+
+    @SubscribeEvent
+    public static void onLoad(final ModConfigEvent.Loading event) {
+        moduleThermoregulatorUnitUsage = MODULE_THERMOREGULATOR_UNIT_USAGE.get();
+        moduleHydrationUnitUsage = MODULE_HYDRATION_UNIT_USAGE.get();
+        moduleHydrationUnitGivesThirst = MODULE_HYDRATION_UNIT_GIVES_THIRST.get();
+    }
+
+    @SubscribeEvent
+    public static void onReload(final ModConfigEvent.Reloading event) {
+        moduleThermoregulatorUnitUsage = MODULE_THERMOREGULATOR_UNIT_USAGE.get();
+        moduleHydrationUnitUsage = MODULE_HYDRATION_UNIT_USAGE.get();
+        moduleHydrationUnitGivesThirst = MODULE_HYDRATION_UNIT_GIVES_THIRST.get();
+    }
+
+    public static void loadConfig(ForgeConfigSpec spec, String path) {
+        final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave().writingMode(WritingMode.REPLACE).build();
+        configData.load();
+        spec.setConfig(configData);
+    }
 }
