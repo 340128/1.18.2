@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WTL",
+    "RMR",
+    "HHH"
+  ],
+  "key": {
+    "W": {
+      "item": "toughasnails:wool_chestplate"
+    },
+    "T": {
+      "item": "toughasnails:thermoregulator"
+    },
+    "L": {
+      "item": "toughasnails:leaf_chestplate"
+    },
+    "R": {
+      "item": "mekanism:alloy_reinforced"
+    },
+    "M": {
+      "item": "mekanism:module_base"
+    },
+    "H": {
+      "item": "mekanism:hdpe_sheet"
+    }
+  },
+  "result": {
+    "id": "toughasmekanism:module_thermoregulator_unit",
+    "count": 1
+  }
+}

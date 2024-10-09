@@ -1,0 +1,10 @@
+{
+  "module.toughasmekanism.thermoregulator_unit": "Thermoregulator Unit",
+  "description.toughasmekanism.thermoregulator_unit": "Regulates the temperature of your body",
+
+  "module.toughasmekanism.hydration_unit": "Hydration Unit",
+  "description.toughasmekanism.hydration_unit": "(!WIP!) Hydrates your body",
+
+
+  "creativetab.toughasmekanism": "Tough As Mekanism"
+}

@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NWL",
+    "RMR",
+    "HHH"
+  ],
+  "key": {
+    "N": {
+      "item": "toughasnails:empty_netherite_canteen"
+    },
+    "W": {
+      "item": "toughasnails:water_purifier"
+    },
+    "L": {
+      "item": "toughasnails:empty_leather_canteen"
+    },
+    "R": {
+      "item": "mekanism:alloy_reinforced"
+    },
+    "M": {
+      "item": "mekanism:module_base"
+    },
+    "H": {
+      "item": "mekanism:hdpe_sheet"
+    }
+  },
+  "result": {
+    "id": "toughasmekanism:module_hydration_unit",
+    "count": 1
+  }
+}
